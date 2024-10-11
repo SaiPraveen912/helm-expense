@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: expense
+  # These labels are deployment related labels
+  labels:
+    component: backend
+    project: expense
+    tier: app
+spec:
+  replicas: {{ .Values.deployment.replicas }}
+  selector: 
+    matchLabels:
+      component: backend
+      project: expense
+      tier: app
+  # Pod definition
+  template:
+    metadata:
+      labels: 
+        component: backend
+        project: expense
+        tier: app
+    spec:
+      containers:
+      - name: backend
+        image: saipraveen91/backend:{{ .Values.deployment.imageVersion }}
+        envFrom:
+        - configMapRef:
+            name: backend
